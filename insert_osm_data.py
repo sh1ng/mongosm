@@ -16,11 +16,9 @@ class OsmHandler(object):
     def __init__(self, client):
         self.client = client
 
-        self.client.osm.nodes.ensure_index([('loc', pymongo.GEO2D)])
         self.client.osm.nodes.ensure_index([('id', pymongo.ASCENDING),
                                             ('version', pymongo.DESCENDING)])
 
-        self.client.osm.ways.ensure_index([('loc', pymongo.GEO2D)])
         self.client.osm.ways.ensure_index([('id', pymongo.ASCENDING),
                                            ('version', pymongo.DESCENDING)])
 
@@ -82,8 +80,8 @@ class OsmHandler(object):
                 """Parse the XML element at the start"""
                 if name == 'node':
                     record = self.fillDefault(attrs)
-                    loc = [float(attrs['lat']),
-                           float(attrs['lon'])]
+                    loc = [float(attrs['lon']),
+                           float(attrs['lat'])]
                     record['loc'] = loc
                 elif name == 'tag':
                     k = attrs['k']
